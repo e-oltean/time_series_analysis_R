@@ -1,0 +1,35 @@
+#A non-seasonal time series consists of a trend component and an irregular 
+#component. Decomposing the time series involves trying to separate the 
+#time series into these components, that is, estimating the the trend 
+#component and the irregular component.
+
+#The SMA() function in the “TTR” R package can be used to smooth time
+#series data using a simple moving average.
+
+#this is a short term prediction method
+
+#download and turn it into a TS
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat",skip=3)
+kingstimeseries <- ts(kings)
+
+#install TTR package
+install.packages("TTR")
+library("TTR")
+kingstimeseriesSMA3 <- SMA(kingstimeseries,n=3)
+plot.ts(kingstimeseriesSMA3)
+
+#There still appears to be quite a lot of random fluctuations in the time
+#series smoothed using a simple moving average of order 3. Thus, to estimate
+#the trend component more accurately, we might want to try smoothing the
+#data with a simple moving average of a higher order. This takes a little 
+#bit of trial-and-error, to find the right amount of smoothing. For example, 
+#we can try using a simple moving average of order 8:
+
+kingstimeseriesSMA8 <- SMA(kingstimeseries,n=8)
+plot.ts(kingstimeseriesSMA8)
+
+#The data smoothed with a simple moving average of order 8 gives a clearer
+#picture of the trend component, and we can see that the age of death of 
+#the English kings seems to have decreased from about 55 years old to about
+#38 years old during the reign of the first 20 kings, and then increased after
+#that to about 73 years old by the end of the reign of the 40th king in the time series.
