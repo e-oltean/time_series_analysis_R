@@ -1,0 +1,8 @@
+#we use built-in R data to have an idea about these databases
+#we use class, start, end, frequency, plot, and summary and functions to have an idea about the structure of the data
+
+data(AirPassengers)
+class(AirPassengers)
+start(AirPassengers); end(AirPassengers); frequency(AirPassengers)
+summary(AirPassengers)
+plot(AirPassengers, ylab = "Passengers (1000's)")
