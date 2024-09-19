@@ -1,0 +1,26 @@
+#A seasonal time series consists of a trend component, a seasonal component
+#and an irregular component. Decomposing the time series means separating the 
+#time series into these three components: that is, estimating these three components.
+
+#To estimate the trend component and seasonal component of a seasonal time series that 
+#can be described using an additive model, we can use the “decompose()” function in R. 
+#This function estimates the trend, seasonal, and irregular components of a time series 
+#that can be described using an additive model.
+#The function “decompose()” returns a list object as its result, where the estimates of 
+#the seasonal component, trend component and irregular component are stored in named elements 
+#of that list objects, called “seasonal”, “trend”, and “random” respectively.
+
+#create the data
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+birthstimeseries <- ts(births, frequency=12, start=c(1946,1))
+
+#decompose the time series into seasonal effect and trend
+birthstimeseriescomponents <- decompose(birthstimeseries)
+seasonal=birthstimeseriescomponents$seasonal
+trend=birthstimeseriescomponents$trend
+ts.plot(cbind(trend, trend * seasonal), lty = 1:2)
+plot(birthstimeseriescomponents)
+
+# this is more suitable for a multiplicative model of a time series
+
+
