@@ -1,0 +1,14 @@
+#Decomposing a time series means separating it into its constituent components, 
+#which are usually a trend component and an irregular component, and if it is a 
+#seasonal time series, a seasonal component.
+
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+birthstimeseries <- ts(births, frequency=12, start=c(1946,1))
+plot.ts(birthstimeseries)
+
+#We can see from this time series that there seems to be seasonal variation in the
+#number of births per month: there is a peak every summer, and a trough every winter.
+#Again, it seems that this time series could probably be described using an additive 
+#model, as the seasonal fluctuations are roughly constant in size over time and do not 
+#seem to depend on the level of the time series, and the random fluctuations also seem 
+#to be roughly constant in size over time.
