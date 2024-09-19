@@ -1,0 +1,36 @@
+
+#If you have a time series that can be described using an additive model 
+#with constant level and no seasonality, you can use simple exponential 
+#smoothing to make short-term forecasts.
+#The simple exponential smoothing method provides a way of estimating 
+#the level at the current time point. Smoothing is controlled by the 
+#parameter alpha; for the estimate of the level at the current time point. 
+#The value of alpha; lies between 0 and 1. Values of alpha that are close to 0 mean that little weight is placed on the most recent observations when making forecasts of future values.
+
+#data creation and plotting
+rain <- scan("http://robjhyndman.com/tsdldata/hurst/precip1.dat",skip=1)
+rainseries <- ts(rain,start=c(1813))
+plot.ts(rainseries)
+
+#exponential smoothing
+rainseriesforecasts <- HoltWinters(rainseries, beta=FALSE, gamma=FALSE)
+
+#forecast storage in a list
+rainseriesforecasts$fitted
+
+# accuracy = the sum of squared errors
+rainseriesforecasts$SSE
+
+#to use the first value in the time series as the initial value for the level.
+HoltWinters(rainseries, beta=FALSE, gamma=FALSE, l.start=23.56)
+
+#install forecast
+install.packages('forecast')
+library(forecast)
+
+#forecast
+rainseriesforecasts2 <- forecast.HoltWinters(rainseriesforecasts, h=8)
+
+#To test whether there is significant evidence for non-zero correlations 
+#at lags 1-20, we can carry out a Ljung-Box test.
+Box.test(rainseriesforecasts2$residuals, lag=20, type="Ljung-Box")
