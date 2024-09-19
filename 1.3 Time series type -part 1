@@ -1,0 +1,12 @@
+
+#Decomposing a time series means separating it into its constituent components, 
+#which are usually a trend component and an irregular component, and if it is a 
+#seasonal time series, a seasonal component.
+
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat",skip=3)
+kingstimeseries <- ts(kings)
+plot.ts(kingstimeseries)
+
+#We can see from the time plot that this time series could probably be described
+#using an additive model, since the random fluctuations in the data are roughly 
+#constant in size over time.
