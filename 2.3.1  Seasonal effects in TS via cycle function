@@ -1,0 +1,11 @@
+#determining the seasonal effect in a time series
+
+data(AirPassengers)
+AP <- AirPassengers
+
+layout(1:2)
+#aggregate the monthly values for each year, 
+#to get a view of the trend
+plot(aggregate(AP))
+#cycle determines the seasonal effect in a box
+boxplot(AP ~ cycle(AP))
