@@ -1,0 +1,38 @@
+#Holt’s exponential 
+#smoothing estimates the level and slope at the current time point. Smoothing
+#is controlled by two parameters, alpha, for the estimate of the level at the 
+#current time point, and beta for the estimate of the slope b of the trend 
+#component at the current time point. As with simple exponential smoothing, 
+#the paramters alpha and beta have values between 0 and 1, and values that 
+#are close to 0 mean that little weight is placed on the most recent 
+#observations when making forecasts of future values.
+
+#data creation
+skirts <- scan("http://robjhyndman.com/tsdldata/roberts/skirts.dat",skip=5)
+skirtsseries <- ts(skirts,start=c(1866))
+plot.ts(skirtsseries)
+
+#use Hotlt's exponential smooth
+skirtsseriesforecasts <- HoltWinters(skirtsseries, gamma=FALSE)
+
+#The estimated value of alpha is 0.84, and of beta is 1.00. These are both high,
+#telling us that both the estimate of the current value of the level, and of the 
+#slope b of the trend component, are based mostly upon very recent observations
+#in the time series. This makes good intuitive sense, since the level and the slope
+#of the time series both change quite a lot over time. The value of the sum-of-squared
+#-errors for the in-sample forecast errors is 16954.
+
+#install forecast
+install.packages('forecast')
+library(forecast)
+
+#use forecast
+skirtsseriesforecasts2 <- forecast.HoltWinters(skirtsseriesforecasts, h=19)
+
+#check whether the in-sample forecast errors show non-zero autocorrelations at lags 1-20
+acf(skirtsseriesforecasts2$residuals, lag.max=20)
+Box.test(skirtsseriesforecasts2$residuals, lag=20, type="Ljung-Box")
+
+# make a time plot
+plot.ts(skirtsseriesforecasts2$residuals)
+plotForecastErrors(skirtsseriesforecasts2$residuals) # make a histogram
