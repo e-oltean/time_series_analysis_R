@@ -1,0 +1,22 @@
+#Decomposing a time series means separating it into its constituent components, 
+#which are usually a trend component and an irregular component, and if it is a 
+#seasonal time series, a seasonal component.
+
+souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
+souvenirtimeseries <- ts(souvenir, frequency=12, start=c(1987,1))
+plot.ts(souvenirtimeseries)
+
+#In this case, it appears that an additive model is not appropriate for describing
+#this time series, since the size of the seasonal fluctuations and random fluctuations
+#seem to increase with the level of the time series. Thus, we may need to transform 
+#the time series in order to get a transformed time series that can be described using
+#an additive model. For example, we can transform the time series by calculating the 
+#natural log of the original data:
+
+logsouvenirtimeseries <- log(souvenirtimeseries)
+plot.ts(logsouvenirtimeseries)
+
+#Here we can see that the size of the seasonal fluctuations and random fluctuations in 
+#the log-transformed time series seem to be roughly constant over time, and do not depend
+#on the level of the time series. Thus, the log-transformed time series can probably be 
+#described using an additive model.
