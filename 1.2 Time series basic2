@@ -1,0 +1,18 @@
+
+# we show how to download data from the internet with scan function
+# we create a time series with ts function and plot it with plot.ts
+# if the plots look somehow rugged we use log function to make it more smooth
+
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat",skip=3)
+kings
+kingstimeseries <- ts(kings)
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+birthstimeseries <- ts(births, frequency=12, start=c(1946,1))
+souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
+souvenirtimeseries <- ts(souvenir, frequency=12, start=c(1987,1))
+souvenirtimeseries
+plot.ts(kingstimeseries)
+plot.ts(birthstimeseries)
+plot.ts(souvenirtimeseries)
+logsouvenirtimeseries <- log(souvenirtimeseries)
+plot.ts(logsouvenirtimeseries)
