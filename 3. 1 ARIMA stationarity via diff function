@@ -1,0 +1,26 @@
+
+#If you have to difference the time series d times to obtain a stationary 
+#series, then you have an ARIMA(p,d,q) model, where d is the order of 
+#differencing used.
+
+#greate data
+skirts <- scan("http://robjhyndman.com/tsdldata/roberts/skirts.dat",skip=5)
+skirtsseries <- ts(skirts,start=c(1866))
+plot.ts(skirtsseries)
+
+# create stationarity through differentiation
+skirtsseriesdiff1 <- diff(skirtsseries, differences=1)
+plot.ts(skirtsseriesdiff1)
+
+#The resulting time series of first differences (above)
+#does not appear to be stationary in mean. Therefore, we can
+#difference the time series twice, to see if that gives us a 
+#stationary time series:
+skirtsseriesdiff2 <- diff(skirtsseries, differences=2)
+plot.ts(skirtsseriesdiff2)
+
+#If you need to difference your original time series data d times 
+#in order to obtain a stationary time series, this means
+#that you can use an ARIMA(p,d,q) model for your time series, 
+#where d is the order of differencing used.
+
