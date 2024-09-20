@@ -1,0 +1,30 @@
+#next step is to select the appropriate ARIMA model, 
+#which means finding the values of most appropriate values of p
+#and q for an ARIMA(p,d,q) model.
+
+#data creation
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat",skip=3)
+kingstimeseries <- ts(kings)
+
+# create stationarity through differentiation
+kingtimeseriesdiff1 <- diff(kingstimeseries, differences=1)
+plot.ts(kingtimeseriesdiff1)
+
+#calculate autocorrelation function
+acf(kingtimeseriesdiff1, lag.max=20) # plot a correlogram
+acf(kingtimeseriesdiff1, lag.max=20, plot=FALSE) # get the autocorrelation values
+
+#calculate partial autocorrelation function
+pacf(kingtimeseriesdiff1, lag.max=20) # plot a correlogram
+pacf(kingtimeseriesdiff1, lag.max=20, plot=FALSE) # get the autocorrelation values
+
+#Since the correlogram is zero after lag 1, and the partial correlogram tails off 
+#to zero after lag 3, this means that an ARMA(3,0) model, that is, an 
+#autoregressive model of order p=3 or an ARMA(0,1) model, that is, 
+#a moving average model of order q=1
+
+#We use the principle of parsimony to decide which model is best: that is, 
+#we assume that the model with the fewest parameters is best. 
+#The ARMA(3,0) model has 3 parameters, the ARMA(0,1) model has 1 parameter, and
+#the ARMA(p,q) model has at least 2 parameters. Therefore, the ARMA(0,1) model 
+#is taken as the best model.
