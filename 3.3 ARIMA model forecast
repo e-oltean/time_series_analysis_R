@@ -1,0 +1,42 @@
+#Once you have selected the best candidate ARIMA(p,d,q) model for your 
+#time series data, you can estimate the parameters of that ARIMA model, 
+#and use that as a predictive model for making forecasts for future 
+#values of your time series. 
+
+#data creation
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat",skip=3)
+kingstimeseries <- ts(kings)
+
+#fitting the data with arima model 
+kingstimeseriesarima <- arima(kingstimeseries, order=c(0,1,1)) # fit an ARIMA(0,1,1) model
+#As mentioned above, if we are fitting an ARIMA(0,1,1) model to our time series, it means 
+#we are fitting an an ARMA(0,1) model to the time series of first differences.
+
+#forecast 
+install.packages("forecast")
+library("forecast") # load the "forecast" R library
+kingstimeseriesforecasts <- forecast.Arima(kingstimeseriesarima, h=5)
+plot.forecast(kingstimeseriesforecasts)
+
+#investigate whether the forecast errors of an ARIMA model are 
+#normally distributed with mean zero and constant variance, and 
+#whether the are correlations between successive forecast errors.
+acf(kingstimeseriesforecasts$residuals, lag.max=20)
+Box.test(kingstimeseriesforecasts$residuals, lag=20, type="Ljung-Box")
+
+#Since the correlogram shows that none of the sample autocorrelations 
+#for lags 1-20 exceed the significance bounds, and the p-value for the
+#Ljung-Box test is 0.9, we can conclude that there is very little evidence 
+#for non-zero autocorrelations in the forecast errors at lags 1-20.
+
+#To investigate whether the forecast errors are normally distributed with 
+#mean zero and constant variance, we can make a time plot and histogram 
+#(with overlaid normal curve) of the forecast errors:
+
+plot.ts(kingstimeseriesforecasts$residuals)
+# make time plot of forecast errors
+plotForecastErrors(kingstimeseriesforecasts$residuals) # make a histogram
+
+#Since successive forecast errors do not seem to be correlated, and the 
+#forecast errors seem to be normally distributed with mean zero and constant variance, 
+#the ARIMA(0,1,1) does seem to provide an adequate predictive model.
