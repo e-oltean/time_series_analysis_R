@@ -1,0 +1,24 @@
+#If a series exhibits periods of increased variance, so the variance is correlated
+#in time (as observed in the S&P500 data), the series exhibits volatility and is
+#called conditional heteroskedastic.
+
+#the form is x(t)=α(mean)+α(i)e(t-i)+b(j)x(t-j), where alpha is the coefficient of MA 
+#and beta is the coefficient of thne conditional variance (x)
+
+#generate data
+install.packages('MASS')
+library(MASS)
+data(SP500)
+plot(SP500, type = 'l')
+acf(SP500)
+
+install.packages('tseries')
+library('tseries')
+
+sp.garch <- garch(SP500, trace = F)
+sp.res<- sp.garch$res[-1] #omit the first term in residuals
+acf(sp.res)
+acf(sp.res^2)
+
+#From this we can see that there is evidence of serial correlation in the squared
+#values, so there is evidence of conditional heteroskedastic behaviour and volatility
