@@ -1,0 +1,26 @@
+#Estimate Spectral Density of a Time Series by a Smoothed Periodogram
+#spec.pgram calculates the periodogram using a fast Fourier transform, 
+#and optionally smooths the result with a series of modified Daniell
+#smoothers (moving averages giving half weight to the end values).
+
+#If no span is specified in the spectrum function,  the heights 
+#of the Fourier line spectrum spikes to construct a spectrum with no smoothing.
+
+
+jpeg(file="figspecpgram.jpg")
+set.seed=022714
+par(mfrow=c(2,1))
+junk<-spec.pgram(runif(256),taper=.0,demean=T,detrend=F)
+abline(h=mean(junk$spec))
+spec.pgram(runif(256),taper=.0,demean=T,detrend=F,spans=10) abline(h=mean(junk$spec))
+graphics.off()
+
+#Daniell smoothers
+k = kernel("daniell", c(9, 9))
+
+#if the time series is circular,there will be a jump where the end meets. 
+#This jump is spurious, but it will propagate itself through all the 
+#frequencies, contaminating them.The solution is to downweight
+#the beginning and end of the data.
+smooth.spec <- spec.pgram(runif(256), kernel = k, taper = 0, plot = FALSE)
+plot(smooth.spec)
