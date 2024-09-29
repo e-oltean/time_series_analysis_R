@@ -1,0 +1,19 @@
+#Two non-stationary time series {xt } and {yt } are cointegrated 
+#if some linear combinationof twp non-stationary is a stationary series.
+#the two are cointegrated and share the underlying stochastic trend.
+# two series can be tested for cointegration using the Phillips-Ouliaris test.
+
+#generate  data
+x <- y <- mu <- rep(0, 1000)
+for (i in 2:1000) mu[i] <- mu[i - 1] + rnorm(1)
+x <- mu + rnorm(1000)
+y <- mu + rnorm(1000)
+
+#check non-stationarity in x
+adf.test(x)$p.value
+
+#check non-stationarity in y
+adf.test(y)$p.value
+
+#Phillips-Ouliaris test.
+po.test(cbind(x, y))
