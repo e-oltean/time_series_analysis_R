@@ -1,0 +1,11 @@
+#Discrete Fourier transform
+#The DFT is usually calculated using the fast fourier transform algorithm
+#(FFT), which is very efficient for long time series.
+#generate data
+set.seed(1)
+n <- 8
+x <- rnorm(n)
+
+X <- fft(x)
+
+fft(X, inverse = TRUE)/n
