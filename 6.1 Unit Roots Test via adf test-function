@@ -1,0 +1,14 @@
+#we check time series models that contain unit roots are suitable.
+#if so, we need to decide whether or not there is a common stochastic trend. 
+#by looking at the correlogram of the differenced series 
+#Whilst this may work for a simple random walk, we have seen in
+#for  more complex ARIMA processes.
+#Dickey and Fuller developed a test of the null hypothesis that α = 1 against
+#an alternative hypothesis that α < 1 for the model 
+
+#data
+install.packages("tseries")
+library(tseries)
+
+#compute augmented Dickey Fullerton test
+adf.test(x)
