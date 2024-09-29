@@ -1,0 +1,12 @@
+#A plot of  spikes, against m is a Fourier line spectrum. 
+#The raw periodogram in R is obtained by joining the tips 
+#of the spikes in the Fourier line spectrum to give a 
+#continuous plot and scaling it so that the area equals
+#the variance. The periodogram distributes the variance 
+#over frequency
+
+layout(1:2)
+set.seed(1)
+x <- rnorm(2048)
+spectrum(x, log = c("no"))
+spectrum(x, span = 65, log = c("no"))
