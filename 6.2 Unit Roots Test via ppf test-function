@@ -1,0 +1,17 @@
+#we check time series models that contain unit roots are suitable.
+#if so, we need to decide whether or not there is a common stochastic trend. 
+#by looking at the correlogram of the differenced series 
+#Whilst this may work for a simple random walk, we have seen in
+#for  more complex ARIMA processes.
+
+#Phillips-Perron test via function pp.test.  Phillips-Perron procedure 
+#estimates the autocorrelations in the stationary process ut directly
+#(using a kernel smoother) rather than assuming an AR approximation,
+#and for this reason the Phillips-Perron test is described as semi-parametric.
+
+#data
+install.packages("tseries")
+library(tseries)
+
+#compute augmented Dickey Fullerton test
+pp.test(x)
