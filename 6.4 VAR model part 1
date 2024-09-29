@@ -1,0 +1,20 @@
+#The R functions polyroot and Mod can be used to test whether a VAR model
+#is stationary, where the function polyroot just takes a vector of polynomial
+#coefficients as an input parameter.
+#picks the coefficient with the lowest AIC (Akaike criterion)
+
+Mod(polyroot(c(1, -0.5, -0.02)))
+
+
+#The parameters of a VAR(p) model can be estimated using the ar function
+#in R, which selects a best-fitting order p based on the smallest AIC.
+
+x <- y <- rep(0, 1000)
+x[1] <- wx[1]
+y[1] <- wy[1]
+for (i in 2:1000) {
+  x[i] <- 0.4 * x[i - 1] + 0.3 * y[i - 1] + wx[i]
+  y[i] <- 0.2 * x[i - 1] + 0.1 * y[i - 1] + wy[i]
+}
+xy.ar <- ar(cbind(x, y))
+xy.ar$ar[, , ]
