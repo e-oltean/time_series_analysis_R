@@ -1,0 +1,28 @@
+#the states will be unknown coefficients in the linear models
+#and the equations that represent changes in states will be rather simple. 
+#A Bayesian approach is ideal for the development of a state space model.
+
+#The SS function in the sspir package (Dethlefsen and Lundbye-Christensen,
+#2006) creates a state space object.The function kfilter gives the Kalman 
+#filter estimate of the state at each time point, given the preceding 
+#observations and the observation atthat time. The function smooth gives
+#the retrospective estimate of the state at each time given the entire time series.
+
+install.packages ('sspir')
+library(sspir)
+set.seed(1)
+Plummet.dat <- 20 + 2*rnorm(20) + c(rep(0,10), rep(-10,10))
+n <- length(Plummet.dat)
+Plummet.mat <- matrix(Plummet.dat, nrow = n, ncol = 1)
+m1 <- SS(y = Plummet.mat,
+         Fmat = function(tt,x,phi) return( matrix(1) ),
+         Gmat = function(tt,x,phi) return( matrix(1) ),
+         Wmat = function(tt,x,phi) return( matrix(0.1)),
+         Vmat = function(tt,x,phi) return( matrix(2) ),
+           m0 = matrix(25), C0 = matrix(10)
+)
+plot(m1$y, ylab = "Closing price", main = "Simulated")
+m1.f <- kfilter(m1)
+m1.s <- smoother(m1.f)
+lines(m1.f$m, lty = 2)
+lines(m1.s$m, lty = 3)
