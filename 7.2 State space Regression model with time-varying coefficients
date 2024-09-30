@@ -1,0 +1,39 @@
+#The time series regression models so far were about a 
+#process is stationary and hence that the coefficients are constant.
+#even if the predictor variables do not explicitly 
+#include time, and state space models are ideally 
+#suited to relaxing the restriction.
+#We fit a straight line with time-varying coefficient.
+
+#The components of θt are the intercept and slope at time t, 
+#and the estimates from the Kalman filter. In this application, 
+#the matrix F , Fmat in the SS function, is time varying and is (1, xt )′ .
+#The matrix Gmat is the identity matrix, which we use diag to generate. 
+#The parameter variation, which is modelled with matrix Wmat, is small
+#relative to the observation variance modelled by Vmat.
+
+install.packages ('sspir')
+library(sspir)
+set.seed(1)
+x1 <- 1:30
+x1 <- x1/10 + 2
+a <- c(rep(4,15), rep(5,15))
+b <- c(rep(2,15), rep(-1,15))
+n <- length(x1)
+y1 <- a + b * x1 + rnorm(n)
+x0 <- rep(1, n)
+xx <- cbind(x0, x1)
+x.mat <- matrix(xx, nrow = n, ncol = 2)
+y.mat <- matrix(y1, nrow = n, ncol = 1)
+m1 <- SS(y = y.mat, x = x.mat,
+           Fmat = function(tt,x,phi)
+             return( matrix(c(x[tt,1], x[tt,2]), nrow = 2, ncol = 1)),
+           Gmat = function(tt,x,phi) return (diag(2)),
+           Wmat = function(tt, x, phi) return (0.1*diag(2)),
+           Vmat = function(tt,x,phi) return (matrix(1)),
+           m0 = matrix(c(5,3),nrow=1,ncol=2),C0=10*diag(2)
+)
+m1.f <- kfilter(m1)
+par(mfcol=c(2,1))
+plot(m1.f$m[,1], type='l')
+plot(m1.f$m[,2], type='l')
